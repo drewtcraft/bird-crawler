@@ -1,7 +1,7 @@
 # eBird Crawler
 
 ## end result
-This program is for _birders_. Basically, they want to crawl this eBird website and iterate through all of the "checklists" pages. On each page is KML (map data) that we want to extract. Once we've extracted all of the KML data, we want to concatenate it into a single large map.
+This program is for _birders_. Basically, they want to crawl [this eBird website](https://ebird.org/) and iterate through all of the "checklists" pages. On each page is KML (map data) that we want to extract. Once we've extracted all of the KML data, we want to concatenate it into a single large map.
 
 ## current state
 I (Andrew) set up a puppeteer script to log in to the eBird site using my credentials. Puppeteer is a "browser orchestrator". Right now we navigate to the main eBird page, click login, input my credentials, and navigate to the MyEBird page.
