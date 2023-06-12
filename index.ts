@@ -1,5 +1,9 @@
-const puppeteer = require("puppeteer");
-const EBird = require("./ebird");
+import puppeteer from "puppeteer";
+import {EBird} from "./ebird";
+
+async function delay(time: number){
+await new Promise(resolve => setTimeout(resolve, time))
+}
 
 async function main() {
   console.log(process.argv[2]);
@@ -11,8 +15,11 @@ async function main() {
   const page = await browser.newPage();
 
   await EBird.goToEBirdHomePage(page);
+  await delay(10000)
   await EBird.logInToEBird(page);
+  await delay(10000)
   await EBird.goToMyEBirdPage(page);
+  await delay(10000)
 
   await browser.close();
 }
