@@ -1,12 +1,13 @@
+import { Page } from "puppeteer";
 
 const E_BIRD_LANDING = "https://ebird.org/home";
 
 const E_BIRD_USERNAME = "drewtcraft";
 const E_BIRD_PASSWORD = "MyD0GisCOOL!";
 
-module.exports = class EBird {
+export class EBird {
 
-  static async goToEBirdHomePage(page) {
+  static async goToEBirdHomePage(page: Page) {
     // this pattern will be used throughout; we use Promise.all
     // to navigate or click somewhere, and waitForNavigation to
     // ensure the browser has loaded the next page
@@ -18,7 +19,7 @@ module.exports = class EBird {
 
   // class that is basically just a namespace for static methods
   // relating to eBird login
-  static async logInToEBird(page) {
+  static async logInToEBird(page: Page) {
       // the HTML selector that gets the sign up button
       const signUpSelector = ".HeaderEbird-menu-tools ul li:nth-child(2)";
       await page.waitForSelector(signUpSelector);
@@ -41,7 +42,7 @@ module.exports = class EBird {
       ]);
   }
 
-  static async goToMyEBirdPage(page) {
+  static async goToMyEBirdPage(page: Page) {
       const selector = "a.HeaderEbird-link[href='/myebird']";
       await page.waitForSelector(selector);
       await Promise.all([
