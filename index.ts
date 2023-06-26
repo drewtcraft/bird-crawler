@@ -5,6 +5,12 @@ async function delay(time: number) {
   await new Promise((resolve) => setTimeout(resolve, time));
 }
 
+interface MapPin {
+  lat: number;
+  long: number;
+  species: string[];
+}
+
 async function main() {
   console.log(process.argv[2]);
 
@@ -24,6 +30,9 @@ async function main() {
   await delay(1000);
   const hrefs = await EBird.getMyListLinks(page);
   console.log(hrefs);
+  // adding map pin lat long and species
+  const mapPins: MapPin[] = [];
+
   for (const href of hrefs) {
     console.log(href);
     await EBird.goToMyLinkPage(page, href);
@@ -31,8 +40,24 @@ async function main() {
     const title = await EBird.getMyListTitle(page);
     console.log(title);
     await delay(1000);
-  }
+    const location = await EBird.getMyListLatLong(page);
+    if (location) {
+      const [lat, long] = location;
+      console.log("lat is", lat);
+      const species: string[] = [];
+      console.log("long is", long);
 
+      const newMapPin: MapPin = {
+        lat,
+        long,
+        species,
+      };
+      mapPins.push(newMapPin);
+    }
+
+    await delay(1000);
+  }
+  console.log(mapPins);
   await browser.close();
 }
 
