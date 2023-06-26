@@ -5,6 +5,10 @@ const E_BIRD_LANDING = "https://ebird.org/home";
 const E_BIRD_USERNAME = "drewtcraft";
 const E_BIRD_PASSWORD = "MyD0GisCOOL!";
 
+async function delay(time: number) {
+  await new Promise((resolve) => setTimeout(resolve, time));
+}
+
 export class EBird {
   static async goToEBirdHomePage(page: Page) {
     // this pattern will be used throughout; we use Promise.all
@@ -28,7 +32,7 @@ export class EBird {
     const usernameInputSelector = "#input-user-name";
     await page.waitForSelector(usernameInputSelector);
     await page.type(usernameInputSelector, E_BIRD_USERNAME);
-
+    await delay(1000);
     // select the password input and type in the password
     const passwordInputSelector = "#input-password";
     await page.waitForSelector(passwordInputSelector);
@@ -66,5 +70,24 @@ export class EBird {
     let value = await page.evaluate((title) => title?.textContent, element);
     // await page.waitForSelector(title);
     return value?.replace(/\t/g, "");
+  }
+
+  static async getMyListLatLong(page: Page) {
+    const locationSelector = 'a[title="View with Google Maps"]';
+    let element = await page.$(locationSelector);
+    let value = await page.evaluate(
+      (location) => location?.getAttribute("href"),
+      element
+    );
+    if (!value) {
+      return;
+    }
+    const current_url = new URL(value);
+
+    const query = current_url.searchParams.get("query");
+    if (!query) {
+      return;
+    }
+    return query.split(",").map((x) => parseFloat(x));
   }
 }
